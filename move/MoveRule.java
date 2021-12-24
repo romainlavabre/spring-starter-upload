@@ -1,6 +1,6 @@
-package com.replace.replace.api.upload.Move;
+package com.replace.replace.api.upload.move;
 
-import com.replace.replace.api.upload.UploadedFile;
+import com.replace.replace.api.request.UploadedFile;
 
 /**
  * @author Romain Lavabre <romainlavabre98@gmail.com>
