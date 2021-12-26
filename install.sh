@@ -38,3 +38,22 @@ CLASSES=(
 for CLASS in "${CLASSES[@]}"; do
     sed -i "s|replace.replace|$PACKAGES|" "$CLASS"
 done
+
+DIRECTORY="$2/src/main/java/com/${PACKAGES//.//}/configuration/upload"
+
+if [ ! -d "$DIRECTORY" ]; then
+    mkdir -p "$DIRECTORY"
+fi
+
+if [ -f "$DIRECTORY/UploadConfig.java" ]; then
+    read -p "File $DIRECTORY/UploadConfig.java, Overwrite ? [Y/n] " -r OVERWRITE
+
+    if [ "$OVERWRITE" == "Y" ] || [ "$OVERWRITE" == "y" ]; then
+        mv "$1/UploadConfig.java" "$DIRECTORY/UploadConfig.java"
+    fi
+
+else
+    mv "$1/UploadConfig.java" "$DIRECTORY/UploadConfig.java"
+fi
+
+sed -i "s|com.replace.replace.api.upload|com.${PACKAGES}.configuration.upload|" "$DIRECTORY/UploadConfig.java"
