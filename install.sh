@@ -20,40 +20,38 @@ for PART in "${ARRAY[@]}"; do
 done
 
 CLASSES=(
-    "$1/UploadHandler.java"
-    "$1/UploadHandlerImpl.java"
-    "$1/Configuration.java"
-    "$1/ContentTypeResolver.java"
-    "$1/move/MoveRule.java"
-    "$1/exception/DuplicationException.java"
-    "$1/exception/UploadException.java"
-    "$1/duplication/DuplicationRule.java"
-    "$1/annotation/AcceptType.java"
-    "$1/annotation/Duplication.java"
-    "$1/annotation/Move.java"
-    "$1/annotation/Size.java"
-    "$1/annotation/TransactionSynchronized.java"
+    "$1/DocumentStoreHandler.java"
+    "$1/S3.java"
 )
 
 for CLASS in "${CLASSES[@]}"; do
     sed -i "s|replace.replace|$PACKAGES|" "$CLASS"
 done
 
-DIRECTORY="$2/src/main/java/com/${PACKAGES//.//}/configuration/upload"
+info "You need import this dependency
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>bom</artifactId>
+            <version>2.15.15</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+AND
+<dependencies>
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>s3</artifactId>
+    </dependency>
+</dependencies>
+"
 
-if [ ! -d "$DIRECTORY" ]; then
-    mkdir -p "$DIRECTORY"
-fi
-
-if [ -f "$DIRECTORY/UploadConfig.java" ]; then
-    read -p "File $DIRECTORY/UploadConfig.java, Overwrite ? [Y/n] " -r OVERWRITE
-
-    if [ "$OVERWRITE" == "Y" ] || [ "$OVERWRITE" == "y" ]; then
-        mv "$1/UploadConfig.java" "$DIRECTORY/UploadConfig.java"
-    fi
-
-else
-    mv "$1/UploadConfig.java" "$DIRECTORY/UploadConfig.java"
-fi
-
-sed -i "s|com.replace.replace.api.upload|com.${PACKAGES}.configuration.upload|" "$DIRECTORY/UploadConfig.java"
+info "You need add this variables
+public interface Variable {
+    String DOCUMENT_PUBLIC_KEY  = \"document.aws.public-key\";
+    String DOCUMENT_PRIVATE_KEY = \"document.aws.private-key\";
+    String DOCUMENT_AWS_BUCKET  = \"document.aws.bucket\";
+}"
