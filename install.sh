@@ -22,6 +22,7 @@ done
 CLASSES=(
     "$1/DocumentStoreHandler.java"
     "$1/S3.java"
+    "$1/ContentTypeResolver.java"
 )
 
 for CLASS in "${CLASSES[@]}"; do
