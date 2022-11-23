@@ -20,7 +20,7 @@ for PART in "${ARRAY[@]}"; do
 done
 
 CLASSES=(
-    "$1/DocumentStoreHandler.java"
+    "$1/DocumentStorageHandler.java"
     "$1/S3.java"
     "$1/ContentTypeResolver.java"
 )
